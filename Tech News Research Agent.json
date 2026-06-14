@@ -1,0 +1,164 @@
+{
+  "name": "Tech News Research Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "aad27123-72c1-4e57-9088-648d58366c05",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Fetch the latest technology news from the RSS feed and generate today's technology research report.",
+        "options": {
+          "systemMessage": "You are an expert Technology Research Analyst.\n\nYour task is to analyze the latest technology news fetched from the RSS feed and create a professional executive-style technology intelligence report.\n\nInstructions:\n\n1. Review all available articles.\n2. Select only the 5 most important stories.\n3. Categorize each story into one of:\n\n   * Artificial Intelligence\n   * Cybersecurity\n   * Cloud Computing\n   * Startups\n   * Software Development\n   * Consumer Technology\n   * Business & Markets\n\nFor each selected story provide:\n\n* Headline\n* Category\n* Importance Score (1-10)\n* One-sentence summary\n* Why It Matters\n\nGenerate the report in the following order:\n\n1. Report Title\n2. Executive Summary\n3. Top 5 Stories\n4. Category Analysis\n5. Emerging Trends\n6. Key Takeaways\n\nFormatting Rules:\n\n* Return ONLY valid HTML.\n* Do NOT use Markdown.\n* Do NOT include <html>, <head>, <body>, or <!DOCTYPE> tags.\n* Use:\n\n  * <h1> for report title\n  * <h2> for section headings\n  * <h3> for article titles\n  * <ul> and <li> for lists\n  * <hr> between major sections\n  * <strong> for labels\n  * <p> for paragraphs\n\nExecutive Summary Requirements:\n\n* 3 to 5 concise sentences.\n* Highlight the most important developments.\n* Focus on business impact and technology trends.\n\nEmerging Trends Section:\n\nIdentify:\n\n* Most discussed topic\n* Biggest innovation\n* Largest business impact\n* Most important security development\n\nKey Takeaways Section:\n\nProvide 3 actionable insights that a technology professional should know today.\n\nThe final output should look like a premium technology newsletter suitable for executives and industry professionals.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c72c0114-b8f7-4a09-bcc6-7221bc1f2d96",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "url": "https://timesofindia.indiatimes.com/rssfeeds/66949542.cms",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedReadTool",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        192
+      ],
+      "id": "0391887c-d652-4e36-a345-6e24b3047891",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        192
+      ],
+      "id": "144a5976-637b-40f7-b2ae-df98a0cad30b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "OpenAI Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "=🚀 Daily Tech Intelligence Brief | {{$now.toFormat(\"cccc, dd MMMM yyyy\")}}",
+        "message": "={{$json.output}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        0
+      ],
+      "id": "e98e6764-52a4-4fc6-afd5-4812adf00032",
+      "name": "Send a message",
+      "webhookId": "e1ae5247-21f3-4c85-90de-52eb7124517c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL",
+          "name": "Gmail Credential"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3f186bec-4ebd-4c72-aedb-abf7c750af97",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": ""
+  },
+  "nodeGroups": [],
+  "id": "NBRi4YpB7vPA51cV",
+  "tags": []
+}
