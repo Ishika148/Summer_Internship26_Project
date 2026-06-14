@@ -37,6 +37,14 @@ The workflow generates a professional technology newsletter containing:
 * Key Takeaways
 
 
+##Output
+
+<img width="978" height="46" alt="image" src="https://github.com/user-attachments/assets/c3e6fb78-52fb-48fa-9b79-9b4b9b8d505b" />
+<img width="1053" height="458" alt="image" src="https://github.com/user-attachments/assets/f2b7346a-83ac-4419-b500-14f320520c0f" />
+<img width="1055" height="438" alt="image" src="https://github.com/user-attachments/assets/6c985388-1147-4b23-8b2b-149645c3a7ad" />
+<img width="1055" height="452" alt="image" src="https://github.com/user-attachments/assets/3d5ae146-25f4-4dc5-bfc2-51a9354f3d1a" />
+<img width="1065" height="524" alt="image" src="https://github.com/user-attachments/assets/202982ed-8964-4303-ab35-4dcaf8ae4218" />
+
 ## Author
 
 Ishika Arote
